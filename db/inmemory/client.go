@@ -33,13 +33,7 @@ func (c *client) ViewUser(id string) (*domain.User, error) {
 
 func (c *client) UpdateUser(user *domain.User) error {
 
-	//idfound := false
-
 	c.ds[user.ID] = user
-
-	/*if !idfound {
-		return &domain.Error{Code: 404, Message: "User doesn't exist"}
-	}*/
 
 	return nil
 }
@@ -55,6 +49,27 @@ func (c *client) ListUsers(limit int32, name string) ([]*domain.User, error) {
 	for _, value := range c.ds {
 		userInfo = append(userInfo, value)
 	}
+
+	userInfoName := make([]*domain.User, 0)
+	if name != "" {
+		for i := 0; i < len(userInfo); i++ {
+			if name == userInfo[i].Name {
+				userInfoName = append(userInfoName, userInfo[i])
+			}
+		}
+		userInfo = userInfoName
+	}
+
+	userInfoLimit := make([]*domain.User, 0)
+	if limit != 0 {
+		if len(userInfo) > int(limit) {
+			for i := 0; i < int(limit); i++ {
+				userInfoLimit = append(userInfoLimit, userInfo[i])
+			}
+			userInfo = userInfoLimit
+		}
+	}
+
 	fmt.Println("The value of userInfo is", userInfo)
 	return userInfo, nil
 }

@@ -1,7 +1,6 @@
 package mongo
 
 import (
-	// "fmt"
 	"context"
 	"fmt"
 	"log"
@@ -30,22 +29,12 @@ func NewClient() (db.DataStore, error) {
 		return nil, err
 	}
 
-	/*defer func() {
-		if err = clientCurrent.Disconnect(ctx); err != nil {
-			panic(err)
-		}
-	}()*/
-
-	//ctx = context.WithTimeout(context.Background(), 2*time.Second)
-	//defer cancel()
 	err = clientCurrent.Ping(ctx, readpref.Primary())
 
 	if err != nil {
 		fmt.Println("The error is", err)
 		return nil, err
 	}
-
-	//collection := client.Database("users_db").Collection("users")
 
 	return &client{dbc: clientCurrent.Database("users_db")}, nil
 }
@@ -58,7 +47,6 @@ func (c *client) AddUser(user *domain.User) (string, error) {
 
 	fmt.Println("In Add User 1")
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-	//defer cancel()
 
 	_, err := c.dbc.Collection("users").InsertOne(ctx, bson.D{
 		{Key: "_id", Value: user.ID},
@@ -73,12 +61,6 @@ func (c *client) AddUser(user *domain.User) (string, error) {
 		return "", err
 	}
 	fmt.Println("In Add User 3")
-	//	id := res.InsertedID
-
-	//mongoId := mongoDoc["_id"]
-	//	stringObjectID := id.(primitive.ObjectID).Hex()
-
-	//fmt.Println(id)
 
 	return "", nil
 }
@@ -101,13 +83,7 @@ func (c *client) ViewUser(id string) (*domain.User, error) {
 
 func (c *client) UpdateUser(user *domain.User) error {
 
-	//fmt.Println("Update user is getting called", id, " Value")
 	ctx, _ := context.WithTimeout(context.Background(), 30*time.Second)
-
-	/*objID, err1 := primitive.ObjectIDFromHex(user.ID)
-	if err1 != nil {
-		return err1
-	}*/
 
 	fmt.Println("Update user is getting called 2")
 	_, err := c.dbc.Collection("users").UpdateOne(
@@ -118,30 +94,16 @@ func (c *client) UpdateUser(user *domain.User) error {
 		},
 	)
 
-	/*_, err := c.dbc.Collection("users").InsertOne(ctx, bson.D{
-		{Key: "_id", Value: user.ID},
-		{Key: "address", Value: user.Address},
-	})*/
-
 	fmt.Println("User Id = ", user.ID, " Address = ", user.Address)
 	if err != nil {
 		fmt.Println(user.ID, "Error")
 		return err
 	}
 
-	//updatedId := result.ModifiedCount
-
-	//mongoId := mongoDoc["_id"]
-	//stringObjectID := updatedId.(primitive.ObjectID).Hex()
-
-	//fmt.Println("Update user is getting called", stringObjectID)
-
 	return nil
 }
 
 func (c *client) ListUsers(limit int32, name string) ([]*domain.User, error) {
-
-	//fmt.Println("Query Params 12", limit, name)
 
 	userInfo := make([]*domain.User, 0)
 
@@ -153,44 +115,36 @@ func (c *client) ListUsers(limit int32, name string) ([]*domain.User, error) {
 	}
 	defer cur.Close(ctx)
 
-	// Wihout limit & name
+	options := options.Find()
+	switch {
+	case name != "" && limit != 0:
+		{
+			options.SetLimit(int64(limit))
+			cur, _ = c.dbc.Collection("users").Find(ctx, bson.M{"name": name}, options)
+		}
+	case limit != 0:
+		{
+			options.SetLimit(int64(limit))
+			cur, _ = c.dbc.Collection("users").Find(ctx, bson.D{}, options)
+		}
+	case name != "":
+		{
+			cur, _ = c.dbc.Collection("users").Find(ctx, bson.M{"name": name}, options)
+		}
+	}
 
 	for cur.Next(ctx) {
-		//var result bson.D
 		var result domain.User
 		err := cur.Decode(&result)
 		if err != nil {
 			log.Fatal(err)
-			//fmt.Println("The error is", err)
 			return nil, err
 		}
 		fmt.Println(&result)
 		userInfo = append(userInfo, &result)
-		// do something with result....
-	}
-
-	userInfoName := make([]*domain.User, 0)
-	if name != "" {
-		for i := 0; i < len(userInfo); i++ {
-			if name == userInfo[i].Name {
-				userInfoName = append(userInfoName, userInfo[i])
-			}
-		}
-		userInfo = userInfoName
-	}
-
-	userInfoLimit := make([]*domain.User, 0)
-	if limit != 0 {
-		if len(userInfo) > int(limit) {
-			for i := 0; i < int(limit); i++ {
-				userInfoLimit = append(userInfoLimit, userInfo[i])
-			}
-			userInfo = userInfoLimit
-		}
 	}
 
 	if err := cur.Err(); err != nil {
-		//log.Fatal(err)
 		return nil, err
 	}
 
@@ -199,13 +153,9 @@ func (c *client) ListUsers(limit int32, name string) ([]*domain.User, error) {
 
 func (c *client) DeleteUser(id string) error {
 
-	/*objID, err1 := primitive.ObjectIDFromHex(id)
-	if err1 != nil {
-		return err1
-	}*/
-
+	fmt.Println(id, " Id ")
 	_, err := c.dbc.Collection("users").DeleteOne(context.Background(), bson.M{"_id": id})
-	//_, err := c.dbc.Collection("users").DeleteOne(context.Background(), bson.D{{}})
+	fmt.Println(err, " Delete ")
 	if err != nil {
 		return err
 	}
