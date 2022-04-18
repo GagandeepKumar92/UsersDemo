@@ -10,7 +10,6 @@ import (
 	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/gen/restapi/operations/users"
 )
 
-// func NewFindUser(rt *runtime) users.FindUsersHandler{
 func NewFindUser(rt *gserver.Runtime) users.FindUsersHandler {
 	return &findUser{rt: rt}
 }
@@ -20,11 +19,9 @@ type findUser struct {
 }
 
 func (f *findUser) Handle(fup users.FindUsersParams) middleware.Responder {
-	//if fup.Name != nil {
+
 	fmt.Println("Name = ", fup.Name, "Limit = ", fup.Limit)
-	//}
-	//n := "Gagandeep Kumar"
-	//us := []*models.User{{Address: "ABC", ID: 2, Name: &n}}
+
 	var limit int32
 	var name string
 	var us []*domain.User
@@ -42,19 +39,12 @@ func (f *findUser) Handle(fup users.FindUsersParams) middleware.Responder {
 		us = f.rt.GetManager().ListUser(0, "")
 	}
 
-	/*if fup.Name != nil {
-		name = *fup.Name
-		fmt.Println("Query Parameteres Name =", *fup.Name)
-	}*/
-
-	//us := f.rt.GetManager().ListUser(limit, name)
-
 	usResponse := []*models.User{}
 	for _, usr := range us {
 		usResponse = append(usResponse, asUserResponse(usr))
 	}
 	res := users.NewFindUsersOK().WithPayload(usResponse)
-	//fmt.Println(f.rt.AppName, "Find User Request Hit")
+
 	return res
-	// print the appication name
+
 }

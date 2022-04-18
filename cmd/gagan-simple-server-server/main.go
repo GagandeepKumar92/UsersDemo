@@ -27,17 +27,12 @@ func main() {
 
 	// create new service API
 	api := operations.NewGaganSimpleServerAPI(swaggerSpec)
-	//api.UsersFindUsersHandler = handlers.NewFindUser()
-	//api.UsersAddUserHandler = handlers.NewAddNewUser()
 
 	v := GaganSimpleServer.NewRunTime("Gagan")
-	// v:=ShivaniCustomServerExample1.Runtime{AppName:"Shivani"}
 	api.UsersFindUsersHandler = handlers.NewFindUser(v)
 	api.UsersAddUserHandler = handlers.NewAddNewUser(v)
 	api.UsersDeleteUserHandler = handlers.NewDeleteUser(v)
 	api.UsersUpdateUserHandler = handlers.NewUpdateUser(v)
-
-	//fmt.Println("The Application Name is",v.AppName)
 
 	server := restapi.NewServer(api)
 	defer server.Shutdown()

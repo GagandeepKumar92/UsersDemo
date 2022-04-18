@@ -5,8 +5,7 @@ import (
 )
 
 func NewRunTime(an string) *Runtime {
-	//return &Runtime{AppName: an, svc: service.NewManager("mongo")}
-	return &Runtime{AppName: an, svc: service.NewManager("inmemory")}
+	return &Runtime{AppName: an, svc: service.NewManager("mongo")}
 }
 
 type Runtime struct {

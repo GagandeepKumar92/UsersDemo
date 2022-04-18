@@ -9,7 +9,6 @@ import (
 	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/gen/restapi/operations/users"
 )
 
-// func NewFindUser(rt *runtime) users.FindUsersHandler{
 func NewUpdateUser(rt *gserver.Runtime) users.UpdateUserHandler {
 	return &updateUser{rt: rt}
 }
