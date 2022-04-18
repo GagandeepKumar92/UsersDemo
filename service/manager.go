@@ -68,5 +68,5 @@ func (m *mgr) ListUser(limit int32, name string) []*domain.User {
 		return nil
 	}
 	return user
-	
+
 }

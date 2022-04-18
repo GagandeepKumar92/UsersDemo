@@ -105,33 +105,30 @@ func (c *client) UpdateUser(user *domain.User) error {
 
 func (c *client) ListUsers(limit int32, name string) ([]*domain.User, error) {
 
+	// limit = 0, name = ""
+
 	userInfo := make([]*domain.User, 0)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
-	cur, err := c.dbc.Collection("users").Find(ctx, bson.D{})
+	/*cur, err := c.dbc.Collection("users").Find(ctx, bson.D{})
 	if err != nil {
 		log.Fatal(err)
-	}
-	defer cur.Close(ctx)
+	}*/
 
-	options := options.Find()
-	switch {
-	case name != "" && limit != 0:
-		{
-			options.SetLimit(int64(limit))
-			cur, _ = c.dbc.Collection("users").Find(ctx, bson.M{"name": name}, options)
-		}
-	case limit != 0:
-		{
-			options.SetLimit(int64(limit))
-			cur, _ = c.dbc.Collection("users").Find(ctx, bson.D{}, options)
-		}
-	case name != "":
-		{
-			cur, _ = c.dbc.Collection("users").Find(ctx, bson.M{"name": name}, options)
-		}
+	filteredMap := map[string]interface{}{
+		"name": name,
 	}
+
+	var cur *mongo.Cursor
+	options := options.Find().SetLimit(int64(limit))
+	if name != "" {
+		cur, _ = c.dbc.Collection("users").Find(ctx, filteredMap, options)
+	} else {
+		cur, _ = c.dbc.Collection("users").Find(ctx, bson.D{}, options)
+	}
+
+	defer cur.Close(ctx)
 
 	for cur.Next(ctx) {
 		var result domain.User
