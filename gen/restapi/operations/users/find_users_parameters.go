@@ -16,11 +16,18 @@ import (
 )
 
 // NewFindUsersParams creates a new FindUsersParams object
-//
-// There are no default values defined in the spec.
+// with the default values initialized.
 func NewFindUsersParams() FindUsersParams {
 
-	return FindUsersParams{}
+	var (
+		// initialize parameters with default values
+
+		limitDefault = int32(0)
+	)
+
+	return FindUsersParams{
+		Limit: &limitDefault,
+	}
 }
 
 // FindUsersParams contains all the bound params for the find users operation
@@ -34,6 +41,7 @@ type FindUsersParams struct {
 
 	/*
 	  In: query
+	  Default: 0
 	*/
 	Limit *int32
 	/*
@@ -79,6 +87,7 @@ func (o *FindUsersParams) bindLimit(rawData []string, hasKey bool, formats strfm
 	// AllowEmptyValue: false
 
 	if raw == "" { // empty values pass all other validations
+		// Default values have been previously initialized by NewFindUsersParams()
 		return nil
 	}
 

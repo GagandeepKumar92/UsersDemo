@@ -1,11 +1,8 @@
 package handlers
 
 import (
-	"fmt"
-
 	"github.com/go-openapi/runtime/middleware"
 	gserver "github.com/go-swagger/go-swagger/examples/GaganSimpleServer"
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/domain"
 	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/gen/models"
 	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/gen/restapi/operations/users"
 )
@@ -20,24 +17,7 @@ type findUser struct {
 
 func (f *findUser) Handle(fup users.FindUsersParams) middleware.Responder {
 
-	fmt.Println("Name = ", fup.Name, "Limit = ", fup.Limit)
-
-	var limit int32
-	var name string
-	var us []*domain.User
-	if fup.Limit != nil && fup.Name != nil {
-		limit = *fup.Limit
-		name = *fup.Name
-		us = f.rt.GetManager().ListUser(limit, name)
-	} else if fup.Limit != nil {
-		limit = *fup.Limit
-		us = f.rt.GetManager().ListUser(limit, "")
-	} else if fup.Name != nil {
-		name = *fup.Name
-		us = f.rt.GetManager().ListUser(0, name)
-	} else {
-		us = f.rt.GetManager().ListUser(0, "")
-	}
+	us := f.rt.GetManager().ListUser(*fup.Limit, filteredMap(fup.Name))
 
 	usResponse := []*models.User{}
 	for _, usr := range us {
@@ -47,4 +27,14 @@ func (f *findUser) Handle(fup users.FindUsersParams) middleware.Responder {
 
 	return res
 
+}
+
+func filteredMap(fileteredName *string) map[string]interface{} {
+	filterMap := make(map[string]interface{})
+
+	if fileteredName != nil {
+		filterMap["name"] = *fileteredName
+	}
+
+	return filterMap
 }

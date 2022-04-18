@@ -10,7 +10,7 @@ import (
 type Manager interface {
 	CreateUser(usr *domain.User) *domain.Error
 	UpdateUser(usr *domain.User) error
-	ListUser(limit int32, name string) []*domain.User
+	ListUser(int32, map[string]interface{}) []*domain.User
 	DeleteUser(id string) error
 	ViewUser(string) (*domain.User, error)
 }

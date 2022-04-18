@@ -4,11 +4,13 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"regexp"
 	"time"
 
 	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/db"
 	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/domain"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
@@ -103,29 +105,23 @@ func (c *client) UpdateUser(user *domain.User) error {
 	return nil
 }
 
-func (c *client) ListUsers(limit int32, name string) ([]*domain.User, error) {
-
-	// limit = 0, name = ""
+func (c *client) ListUsers(limit int32, filteredMap map[string]interface{}) ([]*domain.User, error) {
 
 	userInfo := make([]*domain.User, 0)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
-	/*cur, err := c.dbc.Collection("users").Find(ctx, bson.D{})
-	if err != nil {
-		log.Fatal(err)
-	}*/
 
-	filteredMap := map[string]interface{}{
-		"name": name,
-	}
+	var (
+		cur *mongo.Cursor
+		err error
+	)
 
-	var cur *mongo.Cursor
 	options := options.Find().SetLimit(int64(limit))
-	if name != "" {
-		cur, _ = c.dbc.Collection("users").Find(ctx, filteredMap, options)
-	} else {
-		cur, _ = c.dbc.Collection("users").Find(ctx, bson.D{}, options)
+	cur, err = c.dbc.Collection("users").Find(ctx, applyFilter(filteredMap), options)
+
+	if err != nil {
+		return nil, err
 	}
 
 	defer cur.Close(ctx)
@@ -146,6 +142,24 @@ func (c *client) ListUsers(limit int32, name string) ([]*domain.User, error) {
 	}
 
 	return userInfo, nil
+}
+
+func applyFilter(filterMap map[string]interface{}) map[string]interface{} {
+
+	for k, v := range filterMap {
+		switch mval := v.(type) {
+		case []string:
+			filterMap[k] = bson.M{"$in": mval}
+		case string:
+			// support searching by name using case-insensitive matching
+			fmt.Println("v value is = ", v)
+			if k == "name" {
+				filterMap[k] = bson.M{"$regex": primitive.Regex{Pattern: "^" + regexp.QuoteMeta(mval) + "$", Options: "i"}}
+			}
+
+		}
+	}
+	return filterMap
 }
 
 func (c *client) DeleteUser(id string) error {

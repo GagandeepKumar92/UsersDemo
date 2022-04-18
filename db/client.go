@@ -9,7 +9,7 @@ import (
 type DataStore interface {
 	UpdateUser(*domain.User) error
 	AddUser(*domain.User) (string, error)
-	ListUsers(int32, string) ([]*domain.User, error)
+	ListUsers(int32, map[string]interface{}) ([]*domain.User, error)
 	DeleteUser(string) error
 	ViewUser(string) (*domain.User, error)
 }

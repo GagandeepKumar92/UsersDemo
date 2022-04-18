@@ -61,9 +61,9 @@ func (m *mgr) DeleteUser(id string) error {
 	return m.ds.DeleteUser(id)
 }
 
-func (m *mgr) ListUser(limit int32, name string) []*domain.User {
+func (m *mgr) ListUser(limit int32, fileteredMap map[string]interface{}) []*domain.User {
 
-	user, err := m.ds.ListUsers(limit, name)
+	user, err := m.ds.ListUsers(limit, fileteredMap)
 	if err != nil {
 		return nil
 	}

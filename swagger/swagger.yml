@@ -68,7 +68,7 @@ paths:
           in: query
           type: integer
           format: int32
-         # default: 0
+          default: 0
       responses:
         200:
           description: list the User operations
