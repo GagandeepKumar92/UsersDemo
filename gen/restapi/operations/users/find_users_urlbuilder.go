@@ -15,7 +15,7 @@ import (
 
 // FindUsersURL generates an URL for the find users operation
 type FindUsersURL struct {
-	Limit *int32
+	Limit *int64
 	Name  *string
 
 	_basePath string
@@ -51,7 +51,7 @@ func (o *FindUsersURL) Build() (*url.URL, error) {
 
 	var limitQ string
 	if o.Limit != nil {
-		limitQ = swag.FormatInt32(*o.Limit)
+		limitQ = swag.FormatInt64(*o.Limit)
 	}
 	if limitQ != "" {
 		qs.Set("limit", limitQ)

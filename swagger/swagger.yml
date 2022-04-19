@@ -67,7 +67,6 @@ paths:
         - name: limit
           in: query
           type: integer
-          format: int32
           default: 0
       responses:
         200:
