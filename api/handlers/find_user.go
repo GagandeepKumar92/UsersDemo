@@ -1,8 +1,11 @@
 package handlers
 
 import (
+	"fmt"
+
 	"github.com/go-openapi/runtime/middleware"
 	gserver "github.com/go-swagger/go-swagger/examples/GaganSimpleServer"
+	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/domain"
 	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/gen/models"
 	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/gen/restapi/operations/users"
 )
@@ -17,23 +20,26 @@ type findUser struct {
 
 func (f *findUser) Handle(fup users.FindUsersParams) middleware.Responder {
 
-	us := f.rt.GetManager().ListUser(*fup.Limit, filteredMap(fup.Name))
+	us, err := f.rt.GetManager().ListUser(*fup.Limit, filteredMap(fup))
+
+	if err != nil {
+		fmt.Println(err)
+		return users.NewFindUsersDefault(500).WithPayload(asErrorResponse(&domain.Error{Message: "Internal Server Error"}))
+	}
 
 	usResponse := []*models.User{}
 	for _, usr := range us {
 		usResponse = append(usResponse, asUserResponse(usr))
 	}
-	res := users.NewFindUsersOK().WithPayload(usResponse)
 
-	return res
-
+	return users.NewFindUsersOK().WithPayload(usResponse)
 }
 
-func filteredMap(fileteredName *string) map[string]interface{} {
+func filteredMap(fup users.FindUsersParams) map[string]interface{} {
 	filterMap := make(map[string]interface{})
 
-	if fileteredName != nil {
-		filterMap["name"] = *fileteredName
+	if fup.Name != nil {
+		filterMap["name"] = *fup.Name
 	}
 
 	return filterMap

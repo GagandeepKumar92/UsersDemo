@@ -44,7 +44,7 @@ func (c *client) AddUser(user *domain.User) (string, error) {
 	return user.ID, nil
 }
 
-func (c *client) ListUsers(limit int32, filteredMap map[string]interface{}) ([]*domain.User, error) {
+func (c *client) ListUsers(limit int64, filteredMap map[string]interface{}) ([]*domain.User, error) {
 
 	var userInfo = []*domain.User{}
 	for _, value := range c.ds {

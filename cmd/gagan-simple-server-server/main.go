@@ -17,6 +17,8 @@ import (
 
 func main() {
 
+	// Demo
+
 	var portFlag = flag.Int("port", 4000, "Port to run this service on")
 
 	// load embedded swagger file

@@ -22,7 +22,7 @@ func NewFindUsersParams() FindUsersParams {
 	var (
 		// initialize parameters with default values
 
-		limitDefault = int32(0)
+		limitDefault = int64(0)
 	)
 
 	return FindUsersParams{
@@ -43,7 +43,7 @@ type FindUsersParams struct {
 	  In: query
 	  Default: 0
 	*/
-	Limit *int32
+	Limit *int64
 	/*
 	  In: query
 	*/
@@ -91,9 +91,9 @@ func (o *FindUsersParams) bindLimit(rawData []string, hasKey bool, formats strfm
 		return nil
 	}
 
-	value, err := swag.ConvertInt32(raw)
+	value, err := swag.ConvertInt64(raw)
 	if err != nil {
-		return errors.InvalidType("limit", "query", "int32", raw)
+		return errors.InvalidType("limit", "query", "int64", raw)
 	}
 	o.Limit = &value
 
