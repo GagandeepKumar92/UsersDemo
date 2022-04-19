@@ -105,7 +105,7 @@ func (c *client) UpdateUser(user *domain.User) error {
 	return nil
 }
 
-func (c *client) ListUsers(limit int32, filteredMap map[string]interface{}) ([]*domain.User, error) {
+func (c *client) ListUsers(limit int64, filteredMap map[string]interface{}) ([]*domain.User, error) {
 
 	userInfo := make([]*domain.User, 0)
 
@@ -117,9 +117,8 @@ func (c *client) ListUsers(limit int32, filteredMap map[string]interface{}) ([]*
 		err error
 	)
 
-	options := options.Find().SetLimit(int64(limit))
+	options := options.Find().SetLimit(limit)
 	cur, err = c.dbc.Collection("users").Find(ctx, applyFilter(filteredMap), options)
-
 	if err != nil {
 		return nil, err
 	}
@@ -148,8 +147,6 @@ func applyFilter(filterMap map[string]interface{}) map[string]interface{} {
 
 	for k, v := range filterMap {
 		switch mval := v.(type) {
-		case []string:
-			filterMap[k] = bson.M{"$in": mval}
 		case string:
 			// support searching by name using case-insensitive matching
 			fmt.Println("v value is = ", v)

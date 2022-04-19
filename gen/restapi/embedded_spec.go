@@ -47,7 +47,6 @@ func init() {
           },
           {
             "type": "integer",
-            "format": "int32",
             "default": 0,
             "name": "limit",
             "in": "query"
@@ -278,7 +277,6 @@ func init() {
           },
           {
             "type": "integer",
-            "format": "int32",
             "default": 0,
             "name": "limit",
             "in": "query"
