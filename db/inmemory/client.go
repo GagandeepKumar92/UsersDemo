@@ -2,6 +2,7 @@ package inmemory
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/db"
 	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/domain"
@@ -43,7 +44,7 @@ func (c *client) AddUser(user *domain.User) (string, error) {
 	return user.ID, nil
 }
 
-func (c *client) ListUsers(limit int32, name string) ([]*domain.User, error) {
+func (c *client) ListUsers(limit int64, filteredMap map[string]interface{}) ([]*domain.User, error) {
 
 	var userInfo = []*domain.User{}
 	for _, value := range c.ds {
@@ -51,9 +52,9 @@ func (c *client) ListUsers(limit int32, name string) ([]*domain.User, error) {
 	}
 
 	userInfoName := make([]*domain.User, 0)
-	if name != "" {
+	if filteredMap["name"] != nil {
 		for i := 0; i < len(userInfo); i++ {
-			if name == userInfo[i].Name {
+			if strings.ToUpper(fmt.Sprint(filteredMap["name"])) == strings.ToUpper(userInfo[i].Name) {
 				userInfoName = append(userInfoName, userInfo[i])
 			}
 		}

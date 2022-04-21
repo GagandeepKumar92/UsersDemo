@@ -10,9 +10,9 @@ import (
 type Manager interface {
 	CreateUser(usr *domain.User) *domain.Error
 	UpdateUser(usr *domain.User) error
-	ListUser(limit int32, name string) []*domain.User
+	ListUser(limit int64, fileteredMap map[string]interface{}) ([]*domain.User, error)
 	DeleteUser(id string) error
-	ViewUser(string) (*domain.User, error)
+	ViewUser(id string) (*domain.User, error)
 }
 
 func NewManager(dbType string) Manager {

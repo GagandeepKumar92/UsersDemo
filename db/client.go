@@ -7,11 +7,11 @@ import (
 )
 
 type DataStore interface {
-	UpdateUser(*domain.User) error
-	AddUser(*domain.User) (string, error)
-	ListUsers(int32, string) ([]*domain.User, error)
-	DeleteUser(string) error
-	ViewUser(string) (*domain.User, error)
+	UpdateUser(usr *domain.User) error
+	AddUser(usr *domain.User) (string, error)
+	ListUsers(limit int64, fileteredMap map[string]interface{}) ([]*domain.User, error)
+	DeleteUser(id string) error
+	ViewUser(id string) (*domain.User, error)
 }
 type DatastoreFactory func() (DataStore, error)
 
