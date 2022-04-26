@@ -4,15 +4,16 @@ import (
 	"flag"
 	"log"
 
-	"github.com/go-openapi/loads"
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/gen/restapi"
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/gen/restapi/operations"
+	"GaganSimpleServer/gen/restapi"
+	"GaganSimpleServer/gen/restapi/operations"
 
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer"
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/api/handlers"
+	"github.com/go-openapi/loads"
+
+	"GaganSimpleServer"
+	"GaganSimpleServer/api/handlers"
 
 	//_ "github.com/go-swagger/go-swagger/examples/GaganSimpleServer/db/inmemory"
-	_ "github.com/go-swagger/go-swagger/examples/GaganSimpleServer/db/mongo"
+	_ "GaganSimpleServer/db/mongo"
 )
 
 func main() {

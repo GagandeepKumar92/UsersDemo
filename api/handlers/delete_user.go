@@ -3,10 +3,11 @@ package handlers
 import (
 	"fmt"
 
+	gserver "GaganSimpleServer"
+	"GaganSimpleServer/domain"
+	"GaganSimpleServer/gen/restapi/operations/users"
+
 	"github.com/go-openapi/runtime/middleware"
-	gserver "github.com/go-swagger/go-swagger/examples/GaganSimpleServer"
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/domain"
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/gen/restapi/operations/users"
 )
 
 func NewDeleteUser(rt *gserver.Runtime) users.DeleteUserHandler {

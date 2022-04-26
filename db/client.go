@@ -3,7 +3,7 @@ package db
 import (
 	"fmt"
 
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/domain"
+	"GaganSimpleServer/domain"
 )
 
 type DataStore interface {

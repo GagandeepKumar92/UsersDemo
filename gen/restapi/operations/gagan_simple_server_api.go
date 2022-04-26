@@ -19,7 +19,7 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/gen/restapi/operations/users"
+	"GaganSimpleServer/gen/restapi/operations/users"
 )
 
 // NewGaganSimpleServerAPI creates a new GaganSimpleServer instance

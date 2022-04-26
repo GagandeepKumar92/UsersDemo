@@ -10,8 +10,8 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/gen/restapi/operations"
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/gen/restapi/operations/users"
+	"GaganSimpleServer/gen/restapi/operations"
+	"GaganSimpleServer/gen/restapi/operations/users"
 )
 
 //go:generate swagger generate server --target ..\..\gen --name GaganSimpleServer --spec ..\..\swagger\swagger.yml --principal interface{} --exclude-main
