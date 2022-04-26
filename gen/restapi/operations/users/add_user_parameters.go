@@ -14,7 +14,7 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/validate"
 
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/gen/models"
+	"GaganSimpleServer/gen/models"
 )
 
 // NewAddUserParams creates a new AddUserParams object

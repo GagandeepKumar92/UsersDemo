@@ -3,8 +3,9 @@ package service
 import (
 	"fmt"
 
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/db"
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/domain"
+	"GaganSimpleServer/db"
+
+	"GaganSimpleServer/domain"
 )
 
 type Manager interface {

@@ -4,15 +4,16 @@ import (
 	"flag"
 	"log"
 
-	"github.com/go-openapi/loads"
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/gen/restapi"
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/gen/restapi/operations"
+	"GaganSimpleServer/gen/restapi"
+	"GaganSimpleServer/gen/restapi/operations"
 
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer"
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/api/handlers"
+	"github.com/go-openapi/loads"
+
+	"GaganSimpleServer"
+	"GaganSimpleServer/api/handlers"
 
 	//_ "github.com/go-swagger/go-swagger/examples/GaganSimpleServer/db/inmemory"
-	_ "github.com/go-swagger/go-swagger/examples/GaganSimpleServer/db/mongo"
+	_ "GaganSimpleServer/db/mongo"
 )
 
 func main() {
@@ -27,12 +28,17 @@ func main() {
 
 	// create new service API
 	api := operations.NewGaganSimpleServerAPI(swaggerSpec)
+	//api.UsersFindUsersHandler = handlers.NewFindUser()
+	//api.UsersAddUserHandler = handlers.NewAddNewUser()
 
 	v := GaganSimpleServer.NewRunTime("Gagan")
+	// v:=ShivaniCustomServerExample1.Runtime{AppName:"Shivani"}
 	api.UsersFindUsersHandler = handlers.NewFindUser(v)
 	api.UsersAddUserHandler = handlers.NewAddNewUser(v)
 	api.UsersDeleteUserHandler = handlers.NewDeleteUser(v)
 	api.UsersUpdateUserHandler = handlers.NewUpdateUser(v)
+
+	//fmt.Println("The Application Name is",v.AppName)
 
 	server := restapi.NewServer(api)
 	defer server.Shutdown()

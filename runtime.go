@@ -1,7 +1,7 @@
 package GaganSimpleServer
 
 import (
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/service"
+	"GaganSimpleServer/service"
 )
 
 func NewRunTime(an string) *Runtime {

@@ -3,11 +3,15 @@ package handlers
 import (
 	"fmt"
 
+	"GaganSimpleServer/domain"
+
+	"GaganSimpleServer/gen/models"
+
+	"GaganSimpleServer/gen/restapi/operations/users"
+
+	gserver "GaganSimpleServer"
+
 	"github.com/go-openapi/runtime/middleware"
-	gserver "github.com/go-swagger/go-swagger/examples/GaganSimpleServer"
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/domain"
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/gen/models"
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/gen/restapi/operations/users"
 )
 
 func NewFindUser(rt *gserver.Runtime) users.FindUsersHandler {

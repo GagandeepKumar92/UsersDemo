@@ -15,7 +15,7 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/validate"
 
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/gen/models"
+	"GaganSimpleServer/gen/models"
 )
 
 // NewUpdateUserParams creates a new UpdateUserParams object

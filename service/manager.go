@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/db"
+	"GaganSimpleServer/db"
 
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/domain"
+	"GaganSimpleServer/domain"
+
 	"github.com/segmentio/ksuid"
 )
 

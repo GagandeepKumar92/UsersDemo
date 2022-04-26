@@ -7,8 +7,9 @@ import (
 	"regexp"
 	"time"
 
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/db"
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/domain"
+	"GaganSimpleServer/db"
+	"GaganSimpleServer/domain"
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"

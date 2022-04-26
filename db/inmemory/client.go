@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/db"
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/domain"
+	"GaganSimpleServer/db"
+	"GaganSimpleServer/domain"
 )
 
 func init() {

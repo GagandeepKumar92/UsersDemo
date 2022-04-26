@@ -1,10 +1,11 @@
 package handlers
 
 import (
+	"GaganSimpleServer/domain"
+	"GaganSimpleServer/gen/models"
+
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/domain"
-	"github.com/go-swagger/go-swagger/examples/GaganSimpleServer/gen/models"
 )
 
 func asUserResponse(d *domain.User) *models.User {
